@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software or result package, please cite the associated conference paper."
+title: "Trust-Aware Federated Intrusion Detection Against Poisoning Attacks in Edge Networks"
+type: software
+authors:
+  - family-names: Khan
+    given-names: Ajmal
+    affiliation: "Communication and Information Research Center, Sultan Qaboos University"
+repository-code: "https://github.com/Ajmal-Squ/Trust-Aware-FL-IDS-ICAISC2027"
+license: MIT
+year: 2026
