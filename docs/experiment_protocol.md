@@ -14,7 +14,7 @@ The experiment uses the official UNSW-NB15 training and testing CSV files. Numer
 - Dirichlet alpha: 0.3
 - Local epochs: 1
 - Batch size: 1024
-- Seeds: 11, 29, 47
+- Independent measured seeds: 11, 29
 - Malicious fraction: 0.20
 
 Development records are partitioned among clients using a class-wise Dirichlet split. A coordinator validation subset is retained on the training side, and up to 1,500 validation records are sampled as the trusted reference set.
@@ -47,4 +47,4 @@ The result files contain malicious-update rejection, benign-update rejection, sc
 
 ## Interpretation boundary
 
-This is a first-round operating-point experiment. It should not be interpreted as a replacement for a full multi-round convergence study.
+This is a first-round operating-point experiment. It should not be interpreted as a replacement for a full multi-round convergence study. With only two independent measured seeds, the conference results are controlled empirical measurements rather than strong population-level statistical claims.
