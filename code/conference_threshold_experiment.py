@@ -1,18 +1,15 @@
 from __future__ import annotations
-import importlib.util, pathlib, sys, math, time, json
+import pathlib, sys, math, time
 from collections import OrderedDict
 import numpy as np, pandas as pd, torch
 import torch.nn.functional as F
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import precision_recall_fscore_support
 
-BASE=str(pathlib.Path(__file__).with_name('metra_fl_binary_rerun.py'))
-spec=importlib.util.spec_from_file_location('metra_base',BASE)
-m=importlib.util.module_from_spec(spec); sys.modules['metra_base']=m; spec.loader.exec_module(m)
+import trust_aware_core as m
 TR=pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else pathlib.Path('data/UNSW_NB15_training-set.csv')
 TE=pathlib.Path(sys.argv[2]) if len(sys.argv)>2 else pathlib.Path('data/UNSW_NB15_testing-set.csv')
 OUT=pathlib.Path(sys.argv[3]) if len(sys.argv)>3 else pathlib.Path('results'); OUT.mkdir(parents=True, exist_ok=True)
-SEEDS=(11,29,47); ATTACKS=('label_flip','sign_flip','backdoor'); THRESHOLDS=(.35,.45,.55,.65,.75)
+SEEDS=(11,29); ATTACKS=('label_flip','sign_flip','backdoor'); THRESHOLDS=(.35,.45,.55,.65,.75)
 DEVICE=torch.device('cpu')
 
 def aggregate_threshold(deltas,sizes,trust,outlier,threshold):
@@ -57,7 +54,7 @@ def run_case(seed,attack):
         vals.append(float(1/(1+math.exp(np.clip((loss-base_loss)*3,-20,20)))))
     val=np.asarray(vals)
     trust=np.clip(.30*sim+.35*val+.15*reps+.20*(1-out),0,1)
-    labels=np.array([1 if i in malicious else 0 for i in range(20)]) # 1 malicious
+    labels=np.array([1 if i in malicious else 0 for i in range(20)])
     rows=[]
     for tau in THRESHOLDS:
         agg,accepted=aggregate_threshold(deltas,sizes,trust,out,tau)
